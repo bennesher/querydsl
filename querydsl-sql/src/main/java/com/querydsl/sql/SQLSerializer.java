@@ -657,14 +657,22 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     protected void serializeSources(List<JoinExpression> joins) {
+        serializeSources(joins, false);
+    }
+
+    void serializeSources(List<JoinExpression> joins, boolean nested) {
         if (joins.isEmpty()) {
             String dummyTable = templates.getDummyTable();
             if (!Strings.isNullOrEmpty(dummyTable)) {
-                append(templates.getFrom());
+                if (!nested) {
+                    append(templates.getFrom());
+                }
                 append(dummyTable);
             }
         } else {
-            append(templates.getFrom());
+            if (!nested) {
+                append(templates.getFrom());
+            }
             for (int i = 0; i < joins.size(); i++) {
                 final JoinExpression je = joins.get(i);
                 if (je.getFlags().isEmpty()) {

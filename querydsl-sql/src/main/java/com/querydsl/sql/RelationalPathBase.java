@@ -37,7 +37,7 @@ import com.querydsl.core.types.dsl.NumberExpression;
  * @param <T>
  *            entity type
  */
-public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath<T> {
+public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath<T>, SQLJoinable<SQLNestedJoinExpressionImpl> {
 
     private static final long serialVersionUID = -7031357250283629202L;
 
@@ -60,7 +60,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
 
     public RelationalPathBase(Class<? extends T> type, String variable, String schema, String table) {
         this(type, PathMetadataFactory.forVariable(variable), schema, table);
-    }
+   }
 
     public RelationalPathBase(Class<? extends T> type, PathMetadata metadata, String schema,
             String table) {
@@ -264,4 +264,353 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         return columnMetadata.get(column);
     }
 
+    /**
+     * Creates a nested full join from this entity to the given target
+     *
+     * @param o full join target
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl fullJoin(EntityPath<?> o) {
+        return new SQLNestedJoinExpressionImpl(this).fullJoin(o);
+    }
+
+    /**
+     * Creates a nested full join from this entity to the given target
+     *
+     * @param o     full join target
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl fullJoin(EntityPath<E> o, Path<E> alias) {
+        return new SQLNestedJoinExpressionImpl(this).fullJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested full join from this entity to the given target
+     *
+     * @param o     full join target
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl fullJoin(RelationalFunctionCall<E> o, Path<E> alias) {
+        return new SQLNestedJoinExpressionImpl(this).fullJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested full join from this entity to the given target
+     *
+     * @param key    foreign key for join
+     * @param entity join target
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl fullJoin(ForeignKey<E> key, RelationalPath<E> entity) {
+        return new SQLNestedJoinExpressionImpl(this).fullJoin(entity).on(key.on(entity));
+    }
+
+    /**
+     * Creates a nested full join from this entity to the given target
+     *
+     * @param o     subquery
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl fullJoin(SubQueryExpression<?> o, Path<?> alias) {
+        return new SQLNestedJoinExpressionImpl(this).fullJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested full join from this entity to the given nested join target
+     *
+     * @param nested The nested join expression
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl fullJoin(SQLNestedJoinExpression<?> nested) {
+        return new SQLNestedJoinExpressionImpl(this).fullJoin(nested);
+    }
+
+    /**
+     * Creates a nested inner join from this entity to the given target
+     *
+     * @param o The target entity
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl innerJoin(EntityPath<?> o) {
+        return new SQLNestedJoinExpressionImpl(this).innerJoin(o);
+    }
+
+    /**
+     * Creates a nested inner join from this entity to the given target
+     *
+     * @param o     inner join target
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl innerJoin(EntityPath<E> o, Path<E> alias) {
+        return new SQLNestedJoinExpressionImpl(this).innerJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested inner join from this entity to the given target
+     *
+     * @param o     relational function call
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl innerJoin(RelationalFunctionCall<E> o, Path<E> alias) {
+        return new SQLNestedJoinExpressionImpl(this).innerJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested inner join from this entity to the given target
+     *
+     * @param foreign foreign key to use for join
+     * @param entity  join target
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl innerJoin(ForeignKey<E> foreign, RelationalPath<E> entity) {
+        return new SQLNestedJoinExpressionImpl(this).innerJoin(entity).on(foreign.on(entity));
+    }
+
+    /**
+     * Creates a nested inner join from this entity to the given target
+     *
+     * @param o     subquery
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl innerJoin(SubQueryExpression<?> o, Path<?> alias) {
+        return new SQLNestedJoinExpressionImpl(this).innerJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested inner join from this entity to the given nested join target
+     *
+     * @param nested The nested join expression
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl innerJoin(SQLNestedJoinExpression<?> nested) {
+        return new SQLNestedJoinExpressionImpl(this).innerJoin(nested);
+    }
+
+    /**
+     * Creates a nested join from this entity to the given target
+     *
+     * @param o join target
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl join(EntityPath<?> o) {
+        return new SQLNestedJoinExpressionImpl(this).join(o);
+    }
+
+    /**
+     * Creates a nested join from this entity to the given target
+     *
+     * @param o     join target
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl join(EntityPath<E> o, Path<E> alias) {
+        return new SQLNestedJoinExpressionImpl(this).join(o, alias);
+    }
+
+    /**
+     * Creates a nested join from this entity to the given target
+     *
+     * @param o     join target
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl join(RelationalFunctionCall<E> o, Path<E> alias) {
+        return new SQLNestedJoinExpressionImpl(this).join(o, alias);
+    }
+
+    /**
+     * Creates a nested join from this entity to the given target
+     *
+     * @param foreign foreign key to use for join
+     * @param entity  join target
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl join(ForeignKey<E> foreign, RelationalPath<E> entity) {
+        return new SQLNestedJoinExpressionImpl(this).join(entity).on(foreign.on(entity));
+    }
+
+    /**
+     * Creates a nested join from this entity to the given target
+     *
+     * @param o     subquery
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl join(SubQueryExpression<?> o, Path<?> alias) {
+        return new SQLNestedJoinExpressionImpl(this).join(o, alias);
+    }
+
+    /**
+     * Creates a nested join from this entity to the given nested join target
+     *
+     * @param nested The nested join expression
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl join(SQLNestedJoinExpression<?> nested) {
+        return new SQLNestedJoinExpressionImpl(this).join(nested);
+    }
+
+    /**
+     * Creates a nested left join from this entity to the given target
+     *
+     * @param o join target
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl leftJoin(EntityPath<?> o) {
+        return new SQLNestedJoinExpressionImpl(this).leftJoin(o);
+    }
+
+    /**
+     * Creates a nested left join from this entity to the given target
+     *
+     * @param o     left join target
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl leftJoin(EntityPath<E> o, Path<E> alias) {
+        return new SQLNestedJoinExpressionImpl(this).leftJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested left join from this entity to the given target
+     *
+     * @param o     relational function call
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl leftJoin(RelationalFunctionCall<E> o, Path<E> alias) {
+        return new SQLNestedJoinExpressionImpl(this).leftJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested left join from this entity to the given target
+     *
+     * @param foreign foreign key to use for join
+     * @param entity  join target
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl leftJoin(ForeignKey<E> foreign, RelationalPath<E> entity) {
+        return new SQLNestedJoinExpressionImpl(this).leftJoin(entity).on(foreign.on(entity));
+    }
+
+    /**
+     * Creates a nested left join from this entity to the given target
+     *
+     * @param o     subquery
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl leftJoin(SubQueryExpression<?> o, Path<?> alias) {
+        return new SQLNestedJoinExpressionImpl(this).leftJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested left join from this entity to the given nested join target
+     *
+     * @param nested The nested join expression
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl leftJoin(SQLNestedJoinExpression<?> nested) {
+        return new SQLNestedJoinExpressionImpl(this).leftJoin(nested);
+    }
+
+    /**
+     * Creates a nested right join from this entity to the given target
+     *
+     * @param o join target
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl rightJoin(EntityPath<?> o) {
+        return new SQLNestedJoinExpressionImpl(this).rightJoin(o);
+    }
+
+    /**
+     * Creates a nested right join from this entity to the given target
+     *
+     * @param o     right join target
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl rightJoin(EntityPath<E> o, Path<E> alias) {
+        return new SQLNestedJoinExpressionImpl(this).rightJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested right join from this entity to the given target
+     *
+     * @param o     relational function call
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl rightJoin(RelationalFunctionCall<E> o, Path<E> alias) {
+        return new SQLNestedJoinExpressionImpl(this).rightJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested right join from this entity to the given target
+     *
+     * @param foreign foreign key to use for join
+     * @param entity  join target
+     * @return the current object
+     */
+    @Override
+    public <E> SQLNestedJoinExpressionImpl rightJoin(ForeignKey<E> foreign, RelationalPath<E> entity) {
+        return new SQLNestedJoinExpressionImpl(this).rightJoin(entity).on(foreign.on(entity));
+    }
+
+    /**
+     * Creates a nested right join from this entity to the given target
+     *
+     * @param o     subquery
+     * @param alias alias
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl rightJoin(SubQueryExpression<?> o, Path<?> alias) {
+        return new SQLNestedJoinExpressionImpl(this).rightJoin(o, alias);
+    }
+
+    /**
+     * Creates a nested right join from this entity to the given nested join target
+     *
+     * @param nested The nested join expression
+     * @return the current object
+     */
+    @Override
+    public SQLNestedJoinExpressionImpl rightJoin(SQLNestedJoinExpression<?> nested) {
+        return new SQLNestedJoinExpressionImpl(this).rightJoin(nested);
+    }
 }

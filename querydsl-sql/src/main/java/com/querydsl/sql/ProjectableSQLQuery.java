@@ -193,6 +193,17 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         return queryMixin.fullJoin(entity).on(key.on(entity));
     }
 
+    /**
+     * Adds a full join to the given nested join target
+     *
+     * @param nested The nested join expression
+     * @return the current object
+     */
+    @Override
+    public Q fullJoin(SQLNestedJoinExpression<?> nested) {
+        return queryMixin.fullJoin(nested);
+    }
+
     @Override
     public Q innerJoin(EntityPath<?> target) {
         return queryMixin.innerJoin(target);
@@ -216,6 +227,17 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     @Override
     public <E> Q innerJoin(ForeignKey<E> key, RelationalPath<E> entity) {
         return queryMixin.innerJoin(entity).on(key.on(entity));
+    }
+
+    /**
+     * Adds an inner join to the given nested join target
+     *
+     * @param nested The nested join expression
+     * @return the current object
+     */
+    @Override
+    public Q innerJoin(SQLNestedJoinExpression<?> nested) {
+        return queryMixin.innerJoin(nested);
     }
 
     @Override
@@ -243,6 +265,17 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         return queryMixin.join(entity).on(key.on(entity));
     }
 
+    /**
+     * Adds a join to the given nested join target
+     *
+     * @param nested The nested join expression
+     * @return the current object
+     */
+    @Override
+    public Q join(SQLNestedJoinExpression<?> nested) {
+        return queryMixin.join(nested);
+    }
+
     @Override
     public Q leftJoin(EntityPath<?> target) {
         return queryMixin.leftJoin(target);
@@ -268,6 +301,17 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
         return queryMixin.leftJoin(entity).on(key.on(entity));
     }
 
+    /**
+     * Adds a left join to the given nested join target
+     *
+     * @param nested The nested join expression
+     * @return the current object
+     */
+    @Override
+    public Q leftJoin(SQLNestedJoinExpression<?> nested) {
+        return queryMixin.leftJoin(nested);
+    }
+
     @Override
     public Q rightJoin(EntityPath<?> target) {
         return queryMixin.rightJoin(target);
@@ -291,6 +335,17 @@ public abstract class ProjectableSQLQuery<T, Q extends ProjectableSQLQuery<T, Q>
     @Override
     public <E> Q rightJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
         return queryMixin.rightJoin(entity).on(key.on(entity));
+    }
+
+    /**
+     * Adds a right join to the given nested join target
+     *
+     * @param nested The nested join expression
+     * @return the current object
+     */
+    @Override
+    public Q rightJoin(SQLNestedJoinExpression<?> nested) {
+        return queryMixin.rightJoin(nested);
     }
 
     @SuppressWarnings("unchecked")
